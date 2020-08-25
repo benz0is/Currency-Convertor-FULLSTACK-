@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    ports:
+      - "3001:3001"
+    depends_on:
+      - client
+    container_name: server_side
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    container_name: client_side
+    stdin_open: true
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: currencies
+      DATABASE_URL: postgres://postgres:admin@db:5432/currencies
+    ports:
+      - "5432:5432"
